@@ -1,3 +1,4 @@
+use nannou::math::Float;
 use nannou::prelude::*;
 
 fn main() {
@@ -22,16 +23,26 @@ fn view(app: &App, _model: &Model, frame: Frame) {
     let row = (app.window_rect().h() / (SIZE as f32 + SPACE * 2.0)) as i32;
     let col = (app.window_rect().w() / (SIZE as f32 + SPACE * 2.0)) as i32;
     let draw = app.draw();
-    let time = app.elapsed_frames() / 3;
-    draw.background().color(BLACK);
+    let time = app.elapsed_frames() / 5;
+
+    if app.elapsed_frames() == 1 {
+        draw.background().color(BLACK);
+    } else {
+        draw.rect()
+            .w_h(app.window_rect().w(), app.window_rect().h())
+            .color(srgba(0.0, 0.0, 0.0, 0.075));
+    }
 
     for i in -row..row + 1 {
         for j in -col..col + 1 {
             let rad = (time as f32 + i as f32 + (j as f32 + time as f32).sin()) / 4.0;
-            let scale = (rad / 2.0).sin();
+            let x = i as f32 * (SIZE + SPACE);
+            let y = j as f32 * (SIZE + SPACE);
+            let hypot = ((x.powi(2) + y.powi(2)).sqrt()).sin();
+            let scale = (rad / 2.0).sin() + hypot;
             draw.ellipse()
                 .color(WHITE)
-                .x_y(i as f32 * (SIZE + SPACE), j as f32 * (SIZE + SPACE))
+                .x_y(x, y)
                 .w_h(scale * SIZE, scale * SIZE);
         }
     }
