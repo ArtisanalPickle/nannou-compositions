@@ -25,7 +25,7 @@ fn view(app: &App, _model: &Model, frame: Frame) {
     for i in -40..40 {
         let y = i as f32 * 10.0 + (1.0 * app.time * 0.5 * i as f32).sin();
         let points = (-50..50).map(|j| {
-            let x = j as f32 * 8.0 + (10.0 * 0.5 * app.time / j as f32).sin() * 3.0;
+            let x = j as f32 * 8.0 + (0.05 * app.time * y as f32).sin() * 3.0;
             Vector2::from((x, y))
         });
         draw.polyline()
