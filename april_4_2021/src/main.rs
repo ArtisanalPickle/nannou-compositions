@@ -18,13 +18,13 @@ fn update(_app: &App, _model: &mut Model, _update: Update) {}
 fn view(app: &App, _model: &Model, frame: Frame) {
     let draw = app.draw();
 
-    if app.elapsed_frames() == 1 {
-        draw.background().color(BLACK);
-    } else {
-        draw.rect()
-            .w_h(app.window_rect().w(), app.window_rect().h())
-            .color(srgba(0.0, 0.0, 0.0, 0.01));
-    }
+    // if app.elapsed_frames() == 1 {
+    draw.background().color(BLACK);
+    // } else {
+    //     draw.rect()
+    //         .w_h(app.window_rect().w(), app.window_rect().h())
+    //         .color(srgba(0.0, 0.0, 0.0, 0.01));
+    // }
 
     let cuboid = Cuboid::from_xyz_whd(
         Vector3::new(
@@ -32,13 +32,17 @@ fn view(app: &App, _model: &Model, frame: Frame) {
             app.time.sin() * 100.0,
             100.0 + app.time.sin() * 100.0,
         ),
-        Vector3::new(100.0, 100.0, 100.0),
+        Vector3::new(
+            app.time.sin() * 200.0,
+            app.time.sin() * 200.0,
+            app.time.sin() * 200.0,
+        ),
     );
     let tris = cuboid.triangles_iter().map(|tri| {
         tri.map_vertices(|v| {
-            let red = map_range(v.x.sin() * 100.0, -50.0, 50.0, 0.0, 0.8);
-            let green = map_range(v.y.sin() * 100.0, -50.0, 50.0, 0.0, 0.8);
-            let blue = map_range(v.z.sin() * 100.0, -50.0, 50.0, 0.0, 0.8);
+            let red = map_range(app.time.sin() * 100.0, 0.0, 100.0, 0.0, 0.3);
+            let green = map_range(app.time.sin() * 100.0 / app.time, 0.0, 100.0, 0.0, 0.5);
+            let blue = map_range(app.time.sin() * 100.0, 0.0 / app.time, 100.0, 0.0, 0.8);
             (v, srgba(red, green, blue, 1.0))
         })
     });
