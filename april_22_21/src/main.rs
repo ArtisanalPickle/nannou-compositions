@@ -24,7 +24,7 @@ fn view(app: &App, _model: &Model, frame: Frame) {
     draw.background().color(BLACK);
     for i in -50..50 {
         let points = (-50..50).map(|j| {
-            let x = j as f32 * 8.0 + (0.5 * app.time * j as f32).sin();
+            let x = j as f32 * 8.0 + (0.5 * app.time / j as f32).sin();
             let y = i as f32 * 8.0 + (1.0 * app.time * i as f32).sin();
             Vector2::from((x, y))
         });
